@@ -25,7 +25,7 @@ import { SingleBedOutlined } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { GetCity, CheckInDate, CheckOutDate, GetList } from "./Action";
+import { GetCity, CheckInDate, CheckOutDate, GetList,AutoCompleteCity,HotelsImages } from "./Action";
 import { useHistory, Switch, Route } from "react-router-dom";
 
 const backImg =
@@ -34,7 +34,7 @@ const backImg =
 const Searchingbar = (props) => {
   const classes = useStyles();
   const [place, setPlace] = useState("");
-  const [state,setState] = useState('')
+  const [city,setCity] = useState('');
   const [checkInOut, setCheckInOut] = useState("");
   const [room, setRoom] = useState("");
   const [age, setAge] = useState("");
@@ -49,6 +49,11 @@ const Searchingbar = (props) => {
   const [snackbarStatus, setSnackbarStatus] = useState(false);
   const [authenticationStatus, setAuthenticationStatus] = useState("");
 
+//TO GET HOTELS ID FOR IMAGES
+  // const hotelid = useSelector((state)=>state?.HotelsNames?.list?.searchResults?.results?.id
+
+  //   )
+
   const handleDateChange = (date) => {
     setSelectedDate(moment(date).format("YYYY-MM-DD"));
   };
@@ -56,9 +61,7 @@ const Searchingbar = (props) => {
     setCheckOutDate(moment(date).format("YYYY-MM-DD"));
   };
 
-  useEffect(() => {
-    console.log({ selectedDate });
-  }, [selectedDate]);
+  
 
   const getList = async (props) => {
     if (place.length > 3) {
@@ -77,20 +80,19 @@ const Searchingbar = (props) => {
           "x-rapidapi-host": "hotels-com-provider.p.rapidapi.com",
         },
       });
-      console.log("searchDestination", res.data);
-      console.log("resdata", res.data);
+      
       setResult(res.data.suggestions);
 
       let cityArr = res.data.suggestions
         .find((item) => item.group === "CITY_GROUP")
         ?.entities.filter((item) => item.type === "CITY");
       setCities(cityArr);
-      console.log("cityArr", cityArr);
+      
     }
   };
 
   useEffect(() => {
-    console.log("place", place);
+    
     if (place !== "") {
       getList();
     } else {
@@ -100,10 +102,15 @@ const Searchingbar = (props) => {
   }, [place]);
 
   const handleAdd = () => {
+    console.log('handle-add')
     if (place !== "") {
       dispatch(GetCity(cities));
       dispatch(CheckInDate(selectedDate));
       dispatch(CheckOutDate(checkOutDate));
+      dispatch(AutoCompleteCity(city))
+      // \
+
+
 
       history.push("/hotels");
     } else {
@@ -124,7 +131,7 @@ const Searchingbar = (props) => {
           </Typography>
         </Box>
 
-        <Paper className={classes.search}>
+        <Box className={classes.search}>
           <Box className={classes.text_box}>
             <Autocomplete
               id="combo-box-demo"
@@ -133,13 +140,8 @@ const Searchingbar = (props) => {
               style={{ width: 300, backgroundColor: "white" }}
               className={classes.auto}
               onChange={(e, value) => {
-                console.log(
-                  "autocomplete",
-
-                  value
-
-                );
-                setState(value)
+                
+                setCity(value)
                 
               }}
               renderInput={(params) => (
@@ -149,16 +151,7 @@ const Searchingbar = (props) => {
                   label="Combo box"
                   variant="outlined"
                   onChange={(e) => {
-                    console.log(
-                      "cities",
-                      cities.find(
-                        (item) =>
-                          item.name.toUpperCase() ===
-                          e.target.value.toUpperCase()
-                      ),
-
-                      e.target.value
-                    );
+                    
                     setPlace(e.target.value);
                   }}
                 />
@@ -229,7 +222,7 @@ const Searchingbar = (props) => {
           >
             search
           </Button>
-        </Paper>
+        </Box>
       </Box>
       <Box className={classes.main_box}></Box>
       <Snackbar

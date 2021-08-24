@@ -6,6 +6,7 @@ export const CHECK_OUT = "CHECK_OUT";
 export const GET_HOTELS_LIST = "GET_HOTELS_LIST";
 export const GET_LIST = "GET_LIST";
 export const AUTO_COMPLETE_SELECT = "AUTO_COMPLETE_SELECT";
+export const HOTEL_IMAGES = "HOTEL_IMAGES";
 
 export const GetCity = (data) => {
   return (dispatch) => {
@@ -52,6 +53,8 @@ export const GetList = (data) => {
   };
 };
 
+
+// Hotels list 
 export const GetHotels = (chekin, chekout, desti) => {
   return async (dispatch) => {
     console.log("hotelapi");
@@ -97,3 +100,26 @@ export const GetHotels = (chekin, chekout, desti) => {
     dispatch({ type: GET_HOTELS_LIST, payload: res.data });
   };
 };
+
+// Hotels images
+
+export const HotelsImages = (id)=>{
+  console.log('hotelId',id)
+  return async (dispatch)=>{
+  console.log('hotel images');
+    const res = await axios({
+    method :"GET",
+    url : "https://hotels-com-provider.p.rapidapi.com/v1/hotels/photos",
+    body :{
+    hotel_id:id,
+  },
+    headers:{
+         'x-rapidapi-key': 'b0b11623a6mshe33f5e1fb8ff16cp19becejsnde4ee04549a2',
+          'x-rapidapi-host': 'hotels-com-provider.p.rapidapi.com'
+       }
+    })
+    console.log('hotel images',res.data);
+    dispatch({type: HOTEL_IMAGES, payload: res.data})
+
+  }
+}

@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {Cities,EnteryDate,ExitDate,HotelsName,getAllList,autoSelectClicked} from './Reducer'
+import {Cities,EnteryDate,ExitDate,HotelsName,getAllList,autoSelectClicked,AllHotelImages} from './Reducer'
 
 export default combineReducers({
     Cities,
@@ -7,5 +7,5 @@ export default combineReducers({
     ExitDate,
     HotelsName,
     getAllList,
-    autoSelectClicked
+    autoSelectClicked,AllHotelImages
 })

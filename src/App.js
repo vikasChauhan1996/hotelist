@@ -7,6 +7,7 @@ import { Autocomplete } from "@material-ui/lab";
 import { TextField } from "@material-ui/core";
 import { Route, Switch } from "react-router";
 import HotelsList from "./HotelsList";
+import {Box} from '@material-ui/core'
 const names = [{ name: "vikas" }];
 function App() {
   return (
@@ -15,10 +16,14 @@ function App() {
       {/* <Searchbar /> */}
       {/* <Searchingbar /> */}
 
+     <Box marginTop="10px" >
+
       <Switch>
         <Route exact path="/" component={Searchingbar} />
         <Route exact path='/hotels' component={HotelsList} />
       </Switch>
+
+      </Box>
     </div>
   );
 }

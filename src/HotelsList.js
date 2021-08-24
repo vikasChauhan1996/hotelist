@@ -8,7 +8,7 @@ import {
   createStyles,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { GetHotels, CheckInDate, CheckOutDate, GetCity } from "./Action";
+import { GetHotels, CheckInDate, CheckOutDate, GetCity,AutoCompleteCity } from "./Action";
 import { checkUtils } from "@material-ui/pickers/_shared/hooks/useUtils";
 
 const HotelsList = () => {
@@ -17,13 +17,17 @@ const HotelsList = () => {
 
   const chekInDay = useSelector((state) => state.EnteryDate.in);
   const checkOutDay = useSelector((state) => state.ExitDate.out);
-  const cityDestiId = useSelector((state) => state.getAllList.getList);
+  // const cityDestiId = useSelector((state) => state.getAllList.getList);
+  const cityDestiId = useSelector((state) => state.autoSelectClicked.selectedCity?.destinationId);
   const hotelshead = useSelector((state) => state.HotelsName.list.header);
   const hotels = useSelector(
     (state) => state.HotelsName.list.searchResults?.results
   );
+  // useEffect(()=>{
+  //   dispatch(AutoCompleteCity(cityDestiId))
+  // })
   useEffect(() => {
-    console.log("checkin", checkOutDay, chekInDay, cityDestiId);
+    
     if (chekInDay && checkOutDay && cityDestiId) {
       dispatch(GetHotels(chekInDay, checkOutDay, cityDestiId));
     }
@@ -34,11 +38,21 @@ const HotelsList = () => {
       <Box>properties found</Box>
 
       <Box>
+      {hotelshead}
         {hotels?.map((result) => {
           return (
             <>
-            {hotelshead}
-              <Paper className={classes.hotelsList}> {result.name} </Paper>
+            
+              <Paper className={classes.hotelsList}>
+                <img src={result.optimizedThumbUrls.srpDesktop} alt={result.name} />
+                <h4 className={classes.hotelName} >
+                {result.name} 
+                
+                  </h4> 
+                  <h3>
+                    {result.address.streetAddress}
+                  </h3>
+                 </Paper>
             </>
           );
         })}
@@ -52,12 +66,18 @@ const useStyles = makeStyles((theme) =>
       width: "500px",
       position: "relative",
       top: "150px",
-      backgroundColor: "aliceblue",
+      // backgroundColor: "aliceblue",
+      backgroundColor: '#e8ecec',
       position: "relative",
       top: "150px",
       height: "300px",
       left: "264px",
+      cursor:'pointer',
+      marginTop:"30px"
     },
+    // hotelsList:{
+    //   color:'red'
+    // },
   })
 );
 

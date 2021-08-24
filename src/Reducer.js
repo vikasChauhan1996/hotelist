@@ -4,7 +4,8 @@ import {
   CHECK_OUT,
   GET_HOTELS_LIST,
   GET_LIST,
-  AUTO_COMPLETE_SELECT
+  AUTO_COMPLETE_SELECT,
+  HOTEL_IMAGES
 } from "./Action";
 
 const initialState = {
@@ -25,6 +26,9 @@ const initialList = {
 const autoSelect = {
   selectedCity : '',
 };
+const hotelImg = {
+  imageList:[]
+}
 
 export const Cities = (state = initialState, action) => {
   switch (action.type) {
@@ -115,4 +119,20 @@ export const getAllList = (state = initialList, action) => {
       return state;
   }
 };
+
+export const AllHotelImages = (state = hotelImg, action)=>{
+
+
+  switch (action.type) {
+    case HOTEL_IMAGES:
+      return{
+        ...state,
+        imageList: action.payload
+      }
+      break;
+  
+    default:
+      return state;
+  }
+}
 // export default Cities;
